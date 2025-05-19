@@ -5,22 +5,27 @@ import RealityKit
 
 public struct EntityDebugView: View {
     @State private var selectedEntity: EntityDebugInfo?
-    @State private var entities: [EntityDebugInfo] = []
+    @ObservedObject private var debugger = DicyaninEntityDebugger.shared
     
     public init() {}
     
     public var body: some View {
         NavigationSplitView {
-            List(entities, id: \.entity.id) { entity in
-                EntityRowView(entity: entity)
+            List(debugger.registeredEntities, id: \.entity.id) { entity in
+                EntityRowView(entity: entity, isSelected: selectedEntity?.entity.id == entity.entity.id)
                     .onTapGesture {
+                        // Remove arrow from previously selected entity
+                        if let previousEntity = selectedEntity?.entity {
+                            previousEntity.removeArrowIndicator()
+                        }
+                        
+                        // Add arrow to newly selected entity
+                        entity.entity.addArrowIndicator()
+                        
                         selectedEntity = entity
                     }
             }
             .navigationTitle("Entity Debugger")
-            .onAppear {
-                updateEntities()
-            }
         } detail: {
             if let entity = selectedEntity {
                 EntityDetailView(entity: entity)
@@ -29,15 +34,18 @@ public struct EntityDebugView: View {
                     .foregroundStyle(.secondary)
             }
         }
-    }
-    
-    private func updateEntities() {
-        entities = DicyaninEntityDebugger.shared.getRegisteredEntities()
+        .onDisappear {
+            // Clean up arrow indicators when view disappears
+            if let selectedEntity = selectedEntity?.entity {
+                selectedEntity.removeArrowIndicator()
+            }
+        }
     }
 }
 
 private struct EntityRowView: View {
     let entity: EntityDebugInfo
+    let isSelected: Bool
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -54,6 +62,9 @@ private struct EntityRowView: View {
             }
         }
         .padding(.vertical, 4)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(isSelected ? Color.accentColor.opacity(0.1) : Color.clear)
+        .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 }
 

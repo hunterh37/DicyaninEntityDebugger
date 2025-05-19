@@ -13,6 +13,8 @@ DicyaninEntityDebugger offers a comprehensive debugging solution for RealityKit 
 - 🔄 Dynamic entity registration and unregistration
 - 📱 Native SwiftUI interface
 - 🎨 Clean and modern UI design
+- ⚡️ Convenient Entity extensions for easy debugging setup
+- 🔘 Quick access button for opening the debug view
 
 ## Requirements
 
@@ -39,7 +41,35 @@ Or add it directly in Xcode:
 
 ## Usage
 
-### 1. Make Your Entity Debuggable
+### Quick Start
+
+The easiest way to debug an entity is using the provided extension:
+
+```swift
+let entity = Entity()
+    .registerForDebugging(name: "MyEntity")
+```
+
+### Adding the Debug Button
+
+Add the debug button to your app's toolbar or menu:
+
+```swift
+struct ContentView: View {
+    var body: some View {
+        NavigationStack {
+            // Your app content
+            .toolbar {
+                DebugViewButton()
+            }
+        }
+    }
+}
+```
+
+### Advanced Usage
+
+#### 1. Make Your Entity Debuggable
 
 Conform your entity to the `DicyaninDebuggable` protocol:
 
@@ -57,14 +87,23 @@ class MyEntity: Entity, DicyaninDebuggable {
 }
 ```
 
-### 2. Register Your Entity
+#### 2. Register Your Entity
+
+You can register your entity in multiple ways:
 
 ```swift
+// Using the extension (recommended)
 let entity = MyEntity()
+    .registerForDebugging()
+
+// Or using the debugger directly
 DicyaninEntityDebugger.shared.register(entity)
+
+// Unregister when done
+entity.unregisterFromDebugging()
 ```
 
-### 3. Add the Debug View
+#### 3. Add the Debug View
 
 ```swift
 struct ContentView: View {
@@ -93,6 +132,37 @@ The core debugger class that manages:
 - Entity unregistration
 - Entity information retrieval
 - Debug session management
+
+### Entity Extensions
+
+The package provides convenient extensions to `Entity` for easy debugging setup:
+
+```swift
+// Register an entity for debugging
+entity.registerForDebugging(name: "CustomName")
+
+// Unregister an entity
+entity.unregisterFromDebugging()
+
+// Method chaining
+Entity()
+    .registerForDebugging()
+    .addChild(childEntity)
+```
+
+### DebugViewButton
+
+A convenient button component that opens the debug view in a new window:
+
+```swift
+// Add to toolbar
+.toolbar {
+    DebugViewButton()
+}
+
+// Or use standalone
+DebugViewButton()
+```
 
 ## License
 
