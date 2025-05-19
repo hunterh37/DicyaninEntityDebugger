@@ -1,26 +1,23 @@
 # DicyaninEntityDebugger
 
-A Swift package that provides a powerful debugging interface for RealityKit entities in your SwiftUI applications.
-
-## Overview
-
-DicyaninEntityDebugger offers a comprehensive debugging solution for RealityKit entities, allowing developers to inspect and monitor entity properties, transforms, and components in real-time through an intuitive SwiftUI interface.
+A powerful debugging interface for RealityKit entities in visionOS applications. This package provides real-time visualization and inspection of entity properties, transforms, and components through an intuitive SwiftUI interface.
 
 ## Features
 
-- 🎯 Real-time entity monitoring
+- 🎯 Real-time entity monitoring and visualization
 - 📊 Detailed entity information display
 - 🔄 Dynamic entity registration and unregistration
 - 📱 Native SwiftUI interface
 - 🎨 Clean and modern UI design
 - ⚡️ Convenient Entity extensions for easy debugging setup
 - 🔘 Quick access button for opening the debug view
+- 🎯 Visual arrow indicators for selected entities
 
 ## Requirements
 
-- iOS 15.0+ / macOS 12.0+
-- Xcode 13.0+
-- Swift 5.5+
+- visionOS 1.0+
+- Xcode 15.0+
+- Swift 5.9+
 
 ## Installation
 
@@ -52,7 +49,7 @@ let entity = Entity()
 
 ### Adding the Debug Button
 
-Add the debug button to your app's toolbar or menu:
+Add the debug button to your app's toolbar:
 
 ```swift
 struct ContentView: View {
@@ -67,43 +64,42 @@ struct ContentView: View {
 }
 ```
 
-### Advanced Usage
+### Visual Arrow Indicators
 
-#### 1. Make Your Entity Debuggable
-
-Conform your entity to the `DicyaninDebuggable` protocol:
+The package includes a visual arrow indicator system that highlights selected entities:
 
 ```swift
-class MyEntity: Entity, DicyaninDebuggable {
-    func dicyaninDebugger() -> EntityDebugInfo {
-        return EntityDebugInfo(
-            entity: self,
-            name: "MyEntity",
-            position: transform.translation,
-            scale: transform.scale,
-            components: ["Component1", "Component2"]
-        )
-    }
-}
+// Add arrow indicator with default height (0.4 units)
+entity.addArrowIndicator()
+
+// Add arrow indicator with custom height
+entity.addArrowIndicator(yOffset: 0.6)
+
+// Remove arrow indicator
+entity.removeArrowIndicator()
 ```
 
-#### 2. Register Your Entity
+### Advanced Usage
+
+#### Entity Registration
 
 You can register your entity in multiple ways:
 
 ```swift
 // Using the extension (recommended)
-let entity = MyEntity()
-    .registerForDebugging()
+let entity = Entity()
+    .registerForDebugging(name: "CustomName")
 
 // Or using the debugger directly
-DicyaninEntityDebugger.shared.register(entity)
+DicyaninEntityDebugger.shared.register(entity, name: "CustomName")
 
 // Unregister when done
 entity.unregisterFromDebugging()
 ```
 
-#### 3. Add the Debug View
+#### Debug View
+
+The debug view provides detailed information about your entities:
 
 ```swift
 struct ContentView: View {
@@ -117,17 +113,18 @@ struct ContentView: View {
 
 ### EntityDebugView
 
-The main debugging interface that provides:
+The main debugging interface provides:
 - List of all registered entities
 - Detailed entity information including:
   - Basic information
   - Transform data (position and scale)
   - Component list
 - Real-time updates
+- Visual selection highlighting
 
 ### DicyaninEntityDebugger
 
-The core debugger class that manages:
+The core debugger class manages:
 - Entity registration
 - Entity unregistration
 - Entity information retrieval
@@ -135,7 +132,7 @@ The core debugger class that manages:
 
 ### Entity Extensions
 
-The package provides convenient extensions to `Entity` for easy debugging setup:
+The package provides convenient extensions to `Entity`:
 
 ```swift
 // Register an entity for debugging
@@ -150,23 +147,17 @@ Entity()
     .addChild(childEntity)
 ```
 
-### DebugViewButton
+### Visual Arrow Indicator System
 
-A convenient button component that opens the debug view in a new window:
-
-```swift
-// Add to toolbar
-.toolbar {
-    DebugViewButton()
-}
-
-// Or use standalone
-DebugViewButton()
-```
+The arrow indicator system provides:
+- Bouncing arrow visualization
+- Customizable height offset
+- Automatic cleanup
+- Smooth animations
 
 ## License
 
-Copyright © 2025 Dicyanin Labs. All rights reserved.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Author
 
@@ -174,4 +165,8 @@ Hunter Harris
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request. 
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Support
+
+If you encounter any issues or have questions, please open an issue on GitHub.
