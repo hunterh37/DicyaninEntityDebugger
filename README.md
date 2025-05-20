@@ -1,5 +1,7 @@
 # DicyaninEntityDebugger
 
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fhunterh37%2FDicyaninEntityDebugger%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/hunterh37/DicyaninEntityDebugger)
+
 A powerful debugging interface for RealityKit entities in visionOS applications. This package provides real-time visualization and inspection of entity properties, transforms, and components through an intuitive SwiftUI interface.
 
 ## Features
